@@ -19,3 +19,6 @@ class Convert():
 # Test
 a = Convert()
 a.converter('converter/annotell_1.json', 'converter/data.json')
+
+
+
