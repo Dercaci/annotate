@@ -12,7 +12,6 @@ class Converter:
         id_obj = [elem for elem in shapeProperties.keys()] # take the id-s
         obj = {}
         objects = {}
-        elements = {}
         data = {}
         openlabel = {}
         for idd in id_obj:
@@ -21,11 +20,12 @@ class Converter:
             na_ty = {}
             na_ty[idd] = names
             obj.update (na_ty) # add to a dict all name/type
-        objects['objects'] = obj # dict obj:all obj
+        objects= obj # dict obj:all obj
 
 
         #first block "relations"
         relations = {}
+        elements = {}
         for iddd in shapeProperties:
             if iddd in shapeProperties:
                 if 'PushingOrPulling' in shapeProperties[iddd]["@all"]:
@@ -40,7 +40,7 @@ class Converter:
                         rdf_s = {"type":"object", "uid": a}
                         rdf_objects.append(rdf_o)
                         rdf_subjects.append(rdf_s)
-                        zero = {"0":{'name':'0',"rdf_objects":rdf_objects,"rdf_subjects":rdf_subjects, "type": "PushingOrPulling"}}
+                        zero = {'name':'0',"rdf_objects":rdf_objects,"rdf_subjects":rdf_subjects, "type": "PushingOrPulling"}
                     else:    
                         one = {}
                         rdf_objects = []
@@ -51,11 +51,14 @@ class Converter:
                         rdf_s = {"type":"object", "uid": "Nothing"}
                         rdf_objects.append(rdf_o)
                         rdf_subjects.append(rdf_s)
-                        one = {"1":{'name':'1',"rdf_objects":rdf_objects,"rdf_subjects":rdf_subjects, "type": "PushingOrPulling"}}
-                        
-        relations['relations'] = zero, one
-                    
-        elements['elements'] = objects, relations
+                        one = {'name':'1',"rdf_objects":rdf_objects,"rdf_subjects":rdf_subjects, "type": "PushingOrPulling"}
+
+        relations = {"0":zero, "1":one}              
+        # relations['relations'] = zero, one
+        
+        elements = {"objects": objects, "relations": relations}           
+        # elements['elements'] = objects, relations
+        
 
 
 
@@ -140,10 +143,10 @@ class Converter:
             
             objects.update (obj)
 
-        frames = {"frames":{"":{"objects":objects}, "relations":{"0":{},"1":{}}}}
+        frames = {"":{"objects":objects}, "relations":{"0":{},"1":{}}}
 
-        openlabel['openlabel'] = elements, frames
-        data['data'] = openlabel
+        openlabel = {"elements":elements, "frames":frames}
+        data = {"openlabel":openlabel}
         return data
        
 
